@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G.L.A.D.I.U.S. - Global Logistical and Diplomatic Intelligence Uplink System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered! Scope:', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('Service Worker registration failed:', err);
+                    });
+            });
+        }
+    </script>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Aegis">
+    <link rel="apple-touch-icon" href="/images/icons/icon-192.png">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <div id="login-screen" class="screen active">
+            <div class="login-panel">
+                <h1 class="login-header-text">G.L.A.D.I.U.S.</h1>
+                <p class="login-sub-header">Global Logistical and Diplomatic Intelligence Uplink System</p>
+                <div class="login-input-box">
+                    <h2>ENTER COMMANDER ID</h2>
+                    <input type="text" id="player-name-input" class="login-input" placeholder="[CLASSIFIED]">
+                </div>
+                <button id="login-button" class="login-button">AUTHENTICATE</button>
+                <p class="login-footer">© 2025 GLADIUS Command. All rights reserved.</p>
+                <p class="login-footer">System Status: Awaiting Command Input</p>
+            </div>
+        </div>
+
+        <div id="home-screen" class="screen">
+            <header class="top-bar">
+                <div class="terminal-title">
+                    <img src="/images/logo.png" alt="GLADIUS Logo" class="top-bar-logo">
+                    <h2 class="system-name">GLADIUS TERMINAL</h2>
+                </div>
+                <div class="user-info">
+                    <span id="player-funds" class="funds">$50,000</span>
+                    <span id="player-rank" class="rank">Rank 1</span>
+                </div>
+                <div class="app-buttons">
+                    <button class="app-button" onclick="UIManager.showScreen('home-screen')">Home</button>
+                    <button class="app-button" onclick="gameEngine.generateEvent()">Generate Mission</button>
+                </div>
+            </header>
+            
+            <main class="main-dashboard">
+                <div class="dashboard-grid" id="app-grid">
+                </div>
+            </main>
+        </div>
+
+        <div id="notification-bar" class="notification-bar">
+        </div>
+
+        <div id="message-overlay" class="overlay">
+            <div class="overlay-content frosted-glass">
+                <p id="message-text"></p>
+                <button onclick="UIManager.hideOverlay('message-overlay')">Dismiss</button>
+            </div>
+        </div>
+
+        <div id="task-screen" class="screen app-screen">
+            <div class="task-brief-panel frosted-glass">
+                <div class="task-header">
+                    <h1 id="task-title"></h1>
+                    <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+                </div>
+                <p id="task-brief" class="task-brief"></p>
+                <div id="tool-options-container" class="tool-options-container">
+                </div>
+            </div>
+        </div>
+
+        <div id="moral-dilemma-screen" class="screen app-screen">
+            <div class="dilemma-panel frosted-glass">
+                <div class="dilemma-header">
+                    <h1>MORAL DILEMMA</h1>
+                    <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+                </div>
+                <p id="dilemma-text"></p>
+                <div id="dilemma-options-container" class="dilemma-options-container">
+                </div>
+            </div>
+        </div>
+
+        <div id="files-screen" class="screen app-screen">
+            <header class="app-header">
+                <h1>FILES</h1>
+                <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+            </header>
+            <main class="app-content-panel frosted-glass">
+                <div class="files-container">
+                    <div id="files-list" class="file-list frosted-glass">
+                    </div>
+                    <div id="file-details" class="file-details frosted-glass">
+                        <p>Select a file to view details.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <div id="recruits-screen" class="screen app-screen">
+            <header class="app-header">
+                <h1>RECRUITS & ASSETS</h1>
+                <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+            </header>
+            <main class="app-content-panel frosted-glass">
+                <div class="recruits-container">
+                    <div id="contacts-list" class="contacts-list frosted-glass">
+                    </div>
+                    <div id="contact-details" class="contact-details frosted-glass">
+                        <p>Select a contact to view their profile.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <div id="influence-screen" class="screen app-screen">
+            <header class="app-header">
+                <h1>INFLUENCE</h1>
+                <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+            </header>
+            <main class="app-content-panel frosted-glass">
+                <div id="influence-display-area" class="influence-display-area">
+                </div>
+            </main>
+        </div>
+
+        <div id="upgrades-screen" class="screen app-screen">
+            <header class="app-header">
+                <h1>UPGRADES</h1>
+                <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+            </header>
+            <main class="app-content-panel frosted-glass">
+                <div id="upgrades-container" class="upgrade-grid">
+                </div>
+            </main>
+        </div>
+
+        <div id="intel-screen" class="screen app-screen">
+            <header class="app-header">
+                <h1>INTEL</h1>
+                <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+            </header>
+            <main class="app-content-panel frosted-glass">
+                <div id="intel-leads-container" class="intel-leads-container">
+                </div>
+            </main>
+        </div>
+
+        <div id="research-screen" class="screen app-screen">
+            <header class="app-header">
+                <h1>RESEARCH & DEVELOPMENT</h1>
+                <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+            </header>
+            <main class="app-content-panel frosted-glass">
+                <div id="research-projects-container" class="research-projects-container">
+                </div>
+            </main>
+        </div>
+
+        <div id="world-screen" class="screen app-screen">
+            <header class="app-header">
+                <h1>WORLD MAP</h1>
+                <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+            </header>
+            <main class="app-content-panel frosted-glass map-panel">
+                <canvas id="world-map-canvas" class="world-map-canvas"></canvas>
+                <div id="task-locations-list" class="task-locations-list frosted-glass">
+                </div>
+            </main>
+        </div>
+
+        <div id="reputation-screen" class="screen app-screen">
+            <header class="app-header">
+                <h1>REPUTATION</h1>
+                <button class="back-button" onclick="UIManager.showScreen('home-screen')">← Back to Home</button>
+            </header>
+            <main class="app-content-panel frosted-glass">
+                <div id="reputation-container" class="reputation-container">
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/manifest.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
